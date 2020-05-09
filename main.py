@@ -30,22 +30,39 @@ def get_definition(word):
     r = requests.get(url)
     out = r.json()[0]['meanings']
     return out
+def get_word():
+  try:  
+    word = input("type in word\n")
+    defin = get_definition(word)
+    return word,defin
+  except:
+    word = input("type in word\n")
+    defin = get_definition(word)
+    return word,defin
+def get_choice(source):
+  try:
+    choice = int(input("\nWhich definition is applicable?"))-1
+    choice = source[choice]
+    return choice
+  except:
+    choice = int(input("\nWhich definition is applicable?"))-1
+    choice = source[choice]
+    return choice
+  
 
 running = True
 while running:
-    word = input("type in word\n")
-    defi = get_definition(word)
+    word,defi = get_word()
     for i in defi:
-        print((defi.index(i)+1),'. ')
 
+        print((defi.index(i)+1),'. ')
         print(i['partOfSpeech'],'\nDefinition:',i['definitions'][0]['definition'])
         try:print('\nExample:',i['definitions'][0]['example'])
         except:print('\nExample: None')
         try:print('\nsynonyms:',i['definitions'][0]['synonyms'])
         except:print('\nsynonyms: None')
 
-    choice = int(input("\nWhich definition is applicable?"))
-    choice = defi[choice-1]
+    choice = get_choice(defi)
 
     question = choice['partOfSpeech']+": "+word
     answer = choice['definitions'][0]['definition']
